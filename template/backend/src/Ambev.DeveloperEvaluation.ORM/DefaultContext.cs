@@ -14,9 +14,29 @@ public class DefaultContext : DbContext
     {
     }
 
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleItem> SaleItems { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Branch> Branches { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.Entity<Sale>()
+               .HasMany(s => s.Items)
+               .WithOne(i => i.Sale)
+               .HasForeignKey(i => i.SaleId);
+
+        modelBuilder.Entity<Sale>()
+            .HasOne(s => s.Customer)
+            .WithMany()
+            .HasForeignKey(s => s.CustomerId);
+
+        modelBuilder.Entity<Sale>()
+            .HasOne(s => s.Branch)
+            .WithMany()
+            .HasForeignKey(s => s.BranchId);
         base.OnModelCreating(modelBuilder);
     }
 }
