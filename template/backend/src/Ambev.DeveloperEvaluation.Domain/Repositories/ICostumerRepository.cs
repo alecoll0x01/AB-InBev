@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
-    public interface ICostumerRepository
+    public interface ICustomerRepository
     {
         /// <summary> 
         /// Retrieve a costumer using unique identifier

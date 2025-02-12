@@ -5,30 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories
 {
-    public class CostumerRepository : ICostumerRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly DefaultContext _context;
 
 
         /// <summary>
-        /// Initializes a new instance of Costumer Repository
+        /// Initializes a new instance of ProductRepository
         /// </summary>
         /// <param name="context">The database context</param>
 
-        public CostumerRepository(DefaultContext context)
+        public ProductRepository(DefaultContext context)
         {
             _context = context;
         }
 
 
         /// <summary>
-        /// Retrieve a costumer using unique identifier
+        /// Retrieve a Product using unique identifier
         /// </summary>
         /// <param name="id">The costumer unique identifier</param>
-        /// <returns>The costumer in repository</returns>
-        public async Task<Customer> GetByIdAsync(int id)
+        /// <returns>The product in repository</returns>
+        public async Task<Product> GetByIdAsync(int id)
         {
-            return await _context.Customers.FindAsync(id);
+            return await _context.Products.FindAsync(id);
         }
+
     }
 }
