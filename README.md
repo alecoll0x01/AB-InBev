@@ -1,86 +1,228 @@
-# Developer Evaluation Project
+# **Documentação do Projeto DeveloperStore**
 
-`READ CAREFULLY`
+Este projeto é uma API para gerenciamento de vendas, desenvolvida seguindo os princípios de **Domain-Driven Design (DDD)**. Ele inclui funcionalidades de CRUD para vendas, aplicação de regras de negócio para descontos e integração com um banco de dados PostgreSQL.
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+---
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+## **Funcionalidades Principais**
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+1. **CRUD de Vendas**:
+   - Criação de vendas com número da venda, data, cliente, filial, produtos, quantidades, preços unitários e descontos.
+   - Consulta de vendas por ID.
+   - Atualização de vendas.
+   - Cancelamento de vendas.
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+2. **Regras de Negócio**:
+   - Descontos baseados na quantidade de itens:
+     - 4+ itens: 10% de desconto.
+     - 10-20 itens: 20% de desconto.
+   - Limite máximo de 20 itens por produto.
+   - Sem desconto para quantidades abaixo de 4 itens.
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+3. **Eventos de Domínio**:
+   - Log de eventos como `SaleCreated`, `SaleModified`, `SaleCancelled` e `ItemCancelled`.
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+4. **Banco de Dados**:
+   - Utiliza PostgreSQL para persistência de dados.
+   - Migrações configuradas para criação automática do esquema do banco de dados.
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+---
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+## **Tecnologias Utilizadas**
 
-### Business Rules
+- **Linguagem**: C#
+- **Framework**: .NET 6
+- **Banco de Dados**: PostgreSQL
+- **ORM**: Entity Framework Core
+- **Padrão de Arquitetura**: Domain-Driven Design (DDD)
+- **Ferramentas**:
+  - Visual Studio ou Visual Studio Code
+  - Docker (opcional, para rodar o PostgreSQL)
+  - Postman (para testar a API)
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+---
 
-These business rules define quantity-based discounting tiers and limitations:
+## **Pré-requisitos**
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+Antes de executar o projeto, certifique-se de ter instalado:
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+1. **.NET 6 SDK**: [Download .NET 6](https://dotnet.microsoft.com/download/dotnet/6.0)
+2. **PostgreSQL**: [Download PostgreSQL](https://www.postgresql.org/download/) ou use Docker (recomendado).
+3. **Visual Studio ou Visual Studio Code**: [Download Visual Studio](https://visualstudio.microsoft.com/) ou [Download VS Code](https://code.visualstudio.com/).
+4. **Docker (opcional)**: [Download Docker](https://www.docker.com/get-started).
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+---
 
-See [Overview](/.doc/overview.md)
+## **Passo a Passo para Executar o Projeto**
 
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
+### 1. **Clonar o Repositório**
 
-See [Tech Stack](/.doc/tech-stack.md)
+Clone o repositório do projeto para sua máquina local:
 
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
+```bash
+git clone https://github.com/seu-usuario/DeveloperStore.git
+cd DeveloperStore
+```
 
-See [Frameworks](/.doc/frameworks.md)
+### 2. Configurar o Banco de Dados
 
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
+# Opção 1: Usando Docker (Recomendado)
 
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
+Crie um container PostgreSQL com Docker:
+```bash
+docker run --name developerstore-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=senha123 -e POSTGRES_DB=DeveloperStore -p 5432:5432 -d postgres
+```
 
-See [Project Structure](/.doc/project-structure.md)
+Verifique se o container está rodando:
+```bash
+docker ps
+```
+
+# Opção 2: Usando PostgreSQL Local
+Crie um banco de dados chamado DeveloperStore no PostgreSQL.
+
+Anote as credenciais de acesso (usuário, senha, host e porta).
+
+### 3. Configurar a Connection String
+No arquivo appsettings.json do projeto Ambev.DeveloperEvaluation.WebApi, atualize a connection string com as credenciais do seu banco de dados:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=DeveloperStore;Username=postgres;Password=senha123"
+}
+```
+
+### 4. Executar as Migrações
+
+No terminal, navegue até a pasta do projeto Ambev.DeveloperEvaluation.ORM e execute as migrações para criar o esquema do banco de dados:
+
+```bash
+dotnet ef database update
+```
+
+### 5. Executar o Projeto
+
+No terminal, navegue até a pasta do projeto Ambev.DeveloperEvaluation.WebApi e execute o projeto:
+
+```bash
+dotnet run
+```
+
+A API estará disponível em: http://localhost:5000 ou https://localhost:5001.
+
+### Testando a API
+# Você pode testar a API usando o Postman ou o arquivo Ambev.DeveloperEvaluation.WebApi.http (disponível no projeto).
+
+Exemplo de Requisições
+Criar uma Venda
+Endpoint: POST /api/sales
+
+Body:
+
+``` json
+{
+  "saleNumber": "V001",
+  "customerId": 1,
+  "branchId": 1,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 5,
+      "unitPrice": 10.00
+    },
+    {
+      "productId": 2,
+      "quantity": 15,
+      "unitPrice": 20.00
+    }
+  ]
+}
+```
+
+Resposta:
+
+```json
+{
+  "id": 1,
+  "saleNumber": "V001",
+  "saleDate": "2023-10-15T12:00:00Z",
+  "totalAmount": 320.00,
+  "isCancelled": false
+}
+```
+Consultar uma Venda por ID
+Endpoint: GET /api/sales/{id}
+
+Resposta:
+
+```json
+{
+  "id": 1,
+  "saleNumber": "V001",
+  "saleDate": "2023-10-15T12:00:00Z",
+  "customerId": 1,
+  "branchId": 1,
+  "totalAmount": 320.00,
+  "isCancelled": false,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 5,
+      "unitPrice": 10.00,
+      "discount": 0.10,
+      "totalAmount": 45.00
+    },
+    {
+      "productId": 2,
+      "quantity": 15,
+      "unitPrice": 20.00,
+      "discount": 0.20,
+      "totalAmount": 240.00
+    }
+  ]
+}
+```
+
+Cancelar uma Venda
+Endpoint: DELETE /api/sales/{id}
+
+Resposta: Status 204 No Content.
+
+---
+
+### Estrutura do Projeto
+# Camadas
+Domain:
+Contém as entidades, enums, validações e regras de negócio.
+Exemplo: Sale, Customer, Product, Branch.
+
+Application:
+Implementa os casos de uso (commands e queries).
+Exemplo: CreateSaleCommand, GetSaleByIdQuery.
+
+Infrastructure:
+Implementa a persistência de dados (repositórios e ORM).
+Exemplo: SaleRepository, DefaultContext.
+
+WebApi:
+Expõe os endpoints da API.
+Configuração do middleware, injeção de dependências e logging.
+
+Repositórios e Interfaces
+Repositórios: Implementam a persistência de dados.
+Exemplo: SaleRepository, CustomerRepository.
+
+Interfaces: Definidas na camada de domínio para abstrair a persistência.
+Exemplo: ISaleRepository, ICustomerRepository.
+
+---
+
+### Considerações Finais
+Este projeto foi desenvolvido seguindo boas práticas de arquitetura e design, com foco em:
+
+Escalabilidade: Facilidade para adicionar novas funcionalidades.
+Manutenibilidade: Código limpo e bem organizado.
+Testabilidade: Separação clara de responsabilidades.
+Para qualquer dúvida ou sugestão, sinta-se à vontade para entrar em contato!
+
+---
