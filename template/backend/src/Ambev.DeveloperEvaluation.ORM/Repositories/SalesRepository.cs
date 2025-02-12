@@ -37,9 +37,28 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         /// </summary>
         /// <param name="id"> the sale unique identifier</param>
         /// <returns></returns>
-        public async Task<Sale> GetByIdAsync(int id) => await _context.Sales
+        public async Task<Sale> GetByIdAsync(Guid id) => await _context.Sales
                 .Include(s => s.Items)
                 .FirstOrDefaultAsync(s => s.Id == id);
+
+
+        /// <summary>
+        /// Deletes a user from the database
+        /// </summary>
+        /// <param name="id">The unique identifier of the user to delete</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if the user was deleted, false if not found</returns>
+        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var sale = await GetByIdAsync(id);
+            if (sale == null)
+                return false;
+
+            _context.Sales.Remove(sale);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+
 
 
         public async Task SaveChangesAsync()

@@ -11,7 +11,7 @@ public class Sale : BaseEntity
     /// <summary>
     /// The unique identifier for the sale.
     /// </summary>
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// The sale number.
