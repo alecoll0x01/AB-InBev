@@ -39,7 +39,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
-            var sale = await _saleRepository.GetByIdAsync(request.Id);
+            var sale = await _saleRepository.GetByIdAsync(request.Id, cancellationToken);
             if (sale == null)
                 throw new KeyNotFoundException($"Sale with ID {request.Id} not found");
 

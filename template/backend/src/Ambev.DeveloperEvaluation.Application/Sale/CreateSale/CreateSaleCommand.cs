@@ -1,17 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.Features.Sales.Commands
 {
     /// <summary>
     /// Comando para criar uma nova venda
     /// </summary>
-    public class CreateSaleCommand : IRequest<int>
+    public class CreateSaleCommand : IRequest<CreateSaleResult>
     {
         /// <summary>
         /// The numebr of sale

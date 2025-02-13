@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Features.Sales.Commands;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using AutoMapper;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
@@ -8,18 +9,21 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
     /// <summary>
     /// Handler para o comando de criação de venda
     /// </summary>
-    public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, Guid>
+    public class CreateSaleCommandHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
     {
         private readonly ISaleRepository _saleRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IBranchRepository _branchRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
         public CreateSaleCommandHandler(
             ISaleRepository saleRepository,
             ICustomerRepository customerRepository,
             IBranchRepository branchRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IMapper mapper
+            )
         {
             _saleRepository = saleRepository;
             _customerRepository = customerRepository;
@@ -27,7 +31,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
             _productRepository = productRepository;
         }
 
-        public async Task<Guid> Handle(CreateSaleCommand request, CancellationToken cancellationToken)
+        public async Task<CreateSaleResult> Handle(CreateSaleCommand request, CancellationToken cancellationToken)
         {
             // Validações de negócio
             var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
@@ -71,8 +75,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
             await _saleRepository.SaveChangesAsync();
 
             Console.WriteLine($"SaleCreated: {sale.SaleNumber}");
-
-            return sale.Id;
+            var result = _mapper.Map<CreateSaleResult>(sale);
+            return result;
         }
     }
 }
