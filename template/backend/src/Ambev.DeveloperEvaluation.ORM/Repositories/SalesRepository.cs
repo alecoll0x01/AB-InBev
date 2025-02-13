@@ -37,7 +37,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         /// </summary>
         /// <param name="id"> the sale unique identifier</param>
         /// <returns></returns>
-        public async Task<Sale> GetByIdAsync(Guid id) => await _context.Sales
+        public async Task<Sale> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => await _context.Sales
                 .Include(s => s.Items)
                 .FirstOrDefaultAsync(s => s.Id == id);
 

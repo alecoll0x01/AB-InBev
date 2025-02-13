@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,12 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
     /// <summary>
     /// Command to get a sale by their ID.
     /// </summary>
-    public class GetSaleCommand
+    public record GetSaleCommand : IRequest<GetSaleResult>
     {
         /// <summary>
         /// The unique identifier of the sale to retrieve.
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Initilizes a new instance of GetSaleCommand

@@ -1,12 +1,10 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
-using MediatR;
-
-namespace Ambev.DeveloperEvaluation.Application.Features.Sales.Commands
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale.CreateSale
 {
+
     /// <summary>
-    /// Comando para criar uma nova venda
+    /// Represents the request for creating a sale
     /// </summary>
-    public class CreateSaleCommand : IRequest<CreateSaleResult>
+    public class CreateSaleRequest
     {
         /// <summary>
         /// The numebr of sale
@@ -39,5 +37,4 @@ namespace Ambev.DeveloperEvaluation.Application.Features.Sales.Commands
             public decimal UnitPrice { get; set; }
         }
     }
-
 }

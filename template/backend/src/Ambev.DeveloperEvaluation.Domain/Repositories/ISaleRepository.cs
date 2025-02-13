@@ -15,7 +15,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <summary>
         /// Deletes a sale from the repository
         /// </summary>
-        /// <param name="id">the sale unique id</param>
+        /// <param name="id">The sale unique id</param>
         /// <param name="cancellationToken">the cancellation Token</param>
         /// <returns></returns>
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
@@ -24,8 +24,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// Retrieve a sale using unique identifier
         /// </summary>
         /// <param name="id">The unique identifier of sale</param>
+        /// <param name="cancellationToken">The cancellation Token</param>
         /// <returns>The sale in repository</returns>
-        Task<Sale> GetByIdAsync(Guid id);
+        Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task SaveChangesAsync();
 
     }

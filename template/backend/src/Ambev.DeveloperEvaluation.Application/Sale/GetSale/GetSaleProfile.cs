@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
         /// </summary>
         public GetSaleProfile()
         {
-            CreateMap<GetSaleCommand, GetSaleResult>();
+            CreateMap<Domain.Entities.Sale, GetSaleResult>();
         }
     }
 }
